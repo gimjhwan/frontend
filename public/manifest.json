@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "version": "1.0.0",
+  "short_name": "React App",
+  "name": "장기 프로젝트",
+  "permissions": [
+    "activeTab",
+    "sidePanel",
+    "contextMenus",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {},
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "icons": {
+    "16": "icons/logo.png",
+    "48": "icons/logo.png",
+    "128": "icons/logo.png"
+  }
+}
