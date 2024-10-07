@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import TabList from "./components/TabList";
 
 function App() {

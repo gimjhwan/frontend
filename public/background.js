@@ -1,7 +1,6 @@
 // 크롬 익스텐션이 설치 되었을 때 실행되는 부분
 chrome.runtime.onInstalled.addListener(() => {
   // 크롬 익스텐션 설치 시, 소개 페이지 탭 생성
-  chrome.tabs.create({ url: "landing.html" });
 });
 
 // 크롬 익스텐션 아이콘 클릭 시, 실행되는 부분
