@@ -5,14 +5,11 @@ chrome.runtime.onInstalled.addListener(() => {
 
 // 크롬 익스텐션 아이콘 클릭 시, 실행되는 부분
 chrome.action.onClicked.addListener(async (tab) => {
-  await chrome.sidePanel.open({ windowId: tab.windowId }); // 사이드바 열기
   //-------------------------------------------------------------------------------------------
   // TODO:
   // 확장 프로그램 아이콘을 누르면 새 윈도우를 열고 그 "윈도우의 정보"를 저장해주세요!
   // 새로 만든 윈도우에서 landing.html 탭과 chat gpt탭을 열어주세요!
-
   // 여기에 작성해주세요!
-
   //-------------------------------------------------------------------------------------------
 });
 
@@ -72,5 +69,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     //
   } else if (request.action == "summarizing") {
     const content = request.content; // 추출한 코드가 들어있는 문자열입니다!
+  } else if (request.action == "open_sidepanel") {
+    currentTab = request.tab;
+    chrome.sidePanel.open({ tabId: currentTab.id }); // 사이드바 열기
+    return true;
   }
 });
