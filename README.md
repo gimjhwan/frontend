@@ -1,3 +1,11 @@
+# Setting
+클론 후, 패키지 설치     
+<code>npm i</code>    
+
+dist 폴더 생성    
+<code>npm run build</code>
+
+
 # Commit Convention
 - feat : 새로운 기능 추가
 - fix : 버그 수정
