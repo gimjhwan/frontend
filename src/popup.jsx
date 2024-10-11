@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import Preview from "./Preview";
+import Preview from "@pages/Preview";
 // css
 import GlobalStyle from "@styles/globalStyle";
 import { theme } from "@styles/theme";

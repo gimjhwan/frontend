@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const EeazyPage = () => {
+export const EezyPage = () => {
   return (
     <Container>
       <h1>Eeazy Page</h1>

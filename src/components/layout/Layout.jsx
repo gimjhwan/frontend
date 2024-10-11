@@ -20,7 +20,6 @@ export const Layout = ({ children }) => {
 
 const Container = styled.div`
   min-width: 360px;
-  width: 100%;
 `;
 const Header = styled.header`
   display: flex;

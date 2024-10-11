@@ -3,7 +3,7 @@ import { createMemoryRouter } from "react-router-dom";
 import TabList from "@components/TabList";
 import { Layout } from "@components/layout/Layout";
 //pages
-import { EeazyPage } from "@pages/EeazyPage";
+import { EezyPage } from "@pages/EezyPage";
 import { LoginPage } from "@pages/LoginPage";
 import { SqueezePage } from "@pages/SqueezePage";
 import { RouterProvider } from "react-router";
@@ -29,7 +29,7 @@ const router = createMemoryRouter([
     path: "/eezy",
     element: (
       <Layout>
-        <EeazyPage />
+        <EezyPage />
       </Layout>
     ),
   },

@@ -8,7 +8,7 @@ import { ThemeProvider } from "styled-components";
 
 
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById("slide-root")).render(
   <StrictMode>
     <GlobalStyle />
     <ThemeProvider theme={theme}>
