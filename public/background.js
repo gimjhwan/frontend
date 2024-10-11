@@ -42,7 +42,8 @@ async function createHomeAndGptWindow() {
     url: ['landing.html', 'https://chat.openai.com'],
     type: 'normal',
     width: 1200,
-    height: 800
+    height: 800,
+    focused: false // 포커스가 옮겨지지 않도록 설정
   });
 
   // 각 탭의 ID 저장
@@ -72,6 +73,8 @@ chrome.runtime.onMessage.addListener(async (request) => {
 
       if (!homeAndGptWindow) {
         await createHomeAndGptWindow(); // ChatGPT 및 landing.html 창 생성
+        // 기존 윈도우로 다시 포커스 이동
+        await chrome.windows.update(currentWindowId, { focused: true });
       } else if (!gptTab) {
         await createGptTab(); // ChatGPT 탭이 없으면 생성
       }
