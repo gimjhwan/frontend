@@ -1,11 +1,11 @@
 import { createMemoryRouter } from "react-router-dom";
 //components
-import TabList from "./components/TabList";
-import { Layout } from "./components/layout/Layout";
+import TabList from "@components/TabList";
+import { Layout } from "@components/layout/Layout";
 //pages
-import { EeazyPage } from "./pages/EeazyPage";
-import { LoginPage } from "./pages/LoginPage";
-import { SqueezePage } from "./pages/SqueezePage";
+import { EeazyPage } from "@pages/EeazyPage";
+import { LoginPage } from "@pages/LoginPage";
+import { SqueezePage } from "@pages/SqueezePage";
 import { RouterProvider } from "react-router";
 
 const router = createMemoryRouter([
