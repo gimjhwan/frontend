@@ -4,7 +4,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 // 팝업 버튼 클릭 시 새로운 창을 열어 landing.html과 ChatGPT 탭을 띄움
-// 활성화된 탭의 정보를 바탕으로 사이드 패널을 열고 관리
+// 활성화된 탭의 정보를 바탕으로 사이드 패널을 열고 관리함
 
 // 전역 변수 선언
 let homeAndGptWindow = null; // 생성된 "홈페이지 및 ChatGPT" 윈도우를 저장
