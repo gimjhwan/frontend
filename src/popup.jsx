@@ -1,10 +1,16 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import Preview from "./Preview";
-import "./index.css";
+// css
+import GlobalStyle from "./styles/globalStyle";
+import { ThemeProvider } from "styled-components";
+import { theme } from "./styles/theme";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Preview />
+    <GlobalStyle />
+    <ThemeProvider theme={theme}>
+      <Preview />
+    </ThemeProvider>
   </StrictMode>
 );
