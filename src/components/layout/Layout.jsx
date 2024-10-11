@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import Logo from "../../assets/icon/icon-logo--text.svg";
-import Menu from "../../assets/icon/icon-menu.svg";
+// img
+import Logo from "../../assets/icon/icon-logo--text.svg?react";
+import Menu from "../../assets/icon/icon-menu.svg?react";
+// components
 import { Nav } from "./Nav";
 
 export const Layout = ({ children }) => {
   return (
     <Container>
       <Header>
-        <img src={Logo} alt="squeezy text logo" />
-        <img src={Menu} alt="menu interaction icon" />
+        <Logo />
+        <Menu />
         <Nav />
       </Header>
       <main>{children}</main>
