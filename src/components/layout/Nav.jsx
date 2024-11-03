@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // style
 import styled from "styled-components";
 import Logo from "@assets/icon/icon-logo--img.svg?react";
@@ -8,9 +9,10 @@ import Search from "@assets/icon/icon-search--small.svg?react";
 import Squeeze from "@assets/icon/icon-squeeze--small.svg?react";
 import Titmetable from "@assets/icon/icon-timetable--small.svg?react";
 
-export const Nav = () => {
+export const Nav = ({setNavOpen}) => {
   const [userName, setUserName] = useState("UserName");
   const [enterIndex, setEnterIndex] = useState(0);
+  const navigate = useNavigate();
 
   const handleMouseEnter = (index) => {
     setEnterIndex(index);
@@ -18,6 +20,12 @@ export const Nav = () => {
   const handleMouseLeave = () => {
     setEnterIndex(0);
   };
+
+  const handleOnClick = (path) => {
+    navigate(path);
+    setNavOpen(false);
+  };
+  
   return (
     <Container onMouseLeave={() => handleMouseLeave()}>
       <NavCell>
@@ -29,6 +37,7 @@ export const Nav = () => {
       <NavCell
         onMouseEnter={() => handleMouseEnter(1)}
         onMouseLeave={() => handleMouseLeave()}
+        onClick={() => handleOnClick("/user")}
         style={{ backgroundColor: enterIndex === 1 ? "#F0F0F0" : "" }}
       >
         <Titmetable
@@ -45,6 +54,7 @@ export const Nav = () => {
       <NavCell
         onMouseEnter={() => handleMouseEnter(2)}
         onMouseLeave={() => handleMouseLeave()}
+        onClick={() => handleOnClick("/squeeze")}
         style={{ backgroundColor: enterIndex === 2 ? "#F0F0F0" : "" }}
       >
         <Squeeze
@@ -62,6 +72,7 @@ export const Nav = () => {
       <NavCell
         onMouseEnter={() => handleMouseEnter(3)}
         onMouseLeave={() => handleMouseLeave()}
+        onClick={() => handleOnClick("/eezy")}
         style={{ backgroundColor: enterIndex === 3 ? "#F0F0F0" : "" }}
       >
         <Eezy
@@ -77,6 +88,7 @@ export const Nav = () => {
       <NavCell
         onMouseEnter={() => handleMouseEnter(4)}
         onMouseLeave={() => handleMouseLeave()}
+        onClick={() => handleOnClick("/search")}
         style={{ backgroundColor: enterIndex === 4 ? "#F0F0F0" : "" }}
       >
         <Search
@@ -93,6 +105,7 @@ export const Nav = () => {
       <NavCell
         onMouseEnter={() => handleMouseEnter(5)}
         onMouseLeave={() => handleMouseLeave()}
+        onClick={() => handleOnClick("/account")}
         style={{ backgroundColor: enterIndex === 5 ? "#F0F0F0" : "" }}
       >
         <Account

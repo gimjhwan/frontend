@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 // img
 import Logo from "../../assets/icon/icon-logo--text.svg?react";
@@ -6,14 +7,20 @@ import Menu from "../../assets/icon/icon-menu.svg?react";
 import { Nav } from "./Nav";
 
 export const Layout = ({ children }) => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  
   return (
     <Container>
       <Header>
-        <div style={{marginTop : "9px"}}>
+        <div style={{ marginTop: "9px" }}>
           <Logo />
         </div>
-        <Menu />
-        <Nav />
+        <div onClick={() => setIsNavOpen((prev) => !prev)}>
+          <Menu />
+        </div>
+        {
+          isNavOpen && <Nav setNavOpen={setIsNavOpen}/>
+        }
       </Header>
       <main>{children}</main>
     </Container>
