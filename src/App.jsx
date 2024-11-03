@@ -1,21 +1,17 @@
 import { createMemoryRouter } from "react-router-dom";
-//components
-import TabList from "@components/TabList";
+// components
 import { Layout } from "@components/layout/Layout";
-//pages
+// pages
 import { EezyPage } from "@pages/EezyPage";
 import { LoginPage } from "@pages/LoginPage";
 import { SqueezePage } from "@pages/SqueezePage";
-import { RouterProvider } from "react-router";
+import { RouterProvider, useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const router = createMemoryRouter([
   {
     path: "/",
-    element: (
-      <Layout>
-        <LoginPage />
-      </Layout>
-    ),
+    element: <LoginPageWrapper />,
   },
   {
     path: "/squeeze",
@@ -34,6 +30,27 @@ const router = createMemoryRouter([
     ),
   },
 ]);
+
+function LoginPageWrapper() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    chrome.storage.local.get(["type"], (result) => {
+      if (result.type === "eezy") {
+        navigate("/eezy");
+      } else if (result.type === "squeeze") {
+        navigate("/squeeze");
+      }
+      chrome.storage.local.remove(["type"]);
+    });
+  }, [navigate]);
+
+  return (
+    <Layout>
+      <LoginPage />
+    </Layout>
+  );
+}
 
 function App() {
   return (
