@@ -52,7 +52,8 @@ const color = {
     default : "#FA99B3",
     hover : "#FFACC2",
     pressed : "#E85079"
-  }
+  },
+  white : "#FFFFFF",
 };
 
 export const theme = {

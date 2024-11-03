@@ -6,10 +6,10 @@ import Eezy from "@assets/btn-eezy.svg?react";
 import Arrow from "@assets/icon/icon-arrow--right.svg?react";
 
 function Preview() {
-  function onSqueeze() {
+  function handleOnClick(btnType) {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const currentTab = tabs[0];
-      chrome.runtime.sendMessage({ action: "open_sidepanel", tab: currentTab });
+      chrome.runtime.sendMessage({ action: "open_sidepanel", tab: currentTab, type : btnType});
     });
   }
 
@@ -20,12 +20,12 @@ function Preview() {
         <span>Do you wanna Squeezy?</span>
       </header>
       <div>
-        <Button onClick={onSqueeze} attribute="squeeze">
+        <Button onClick={() => handleOnClick("squeeze")} attribute="squeeze">
           <Squeeze width={42} height={42} />
           <h2>squeeze</h2>
           <span>categorize current tabs</span>
         </Button>
-        <Button onClick={onSqueeze} attribute="eezy">
+        <Button onClick={() => handleOnClick("eezy")} attribute="eezy">
           <Eezy width={40} height={42} />
           <h2>eezy</h2>
           <span>summarize this page</span>

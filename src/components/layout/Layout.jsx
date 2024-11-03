@@ -9,7 +9,9 @@ export const Layout = ({ children }) => {
   return (
     <Container>
       <Header>
-        <Logo />
+        <div style={{marginTop : "9px"}}>
+          <Logo />
+        </div>
         <Menu />
         <Nav />
       </Header>
@@ -20,8 +22,11 @@ export const Layout = ({ children }) => {
 
 const Container = styled.div`
   min-width: 360px;
+  width: 100%;
 `;
 const Header = styled.header`
   display: flex;
+  padding: 9px 12px;
+  position: relative;
   justify-content: space-between;
 `;
