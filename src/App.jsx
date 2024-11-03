@@ -5,13 +5,15 @@ import { Layout } from "@components/layout/Layout";
 import { EezyPage } from "@pages/EezyPage";
 import { LoginPage } from "@pages/LoginPage";
 import { SqueezePage } from "@pages/SqueezePage";
-import { RouterProvider, useNavigate } from "react-router";
-import { useEffect } from "react";
+import { RouterProvider } from "react-router";
+import { UserSqueezyPage } from "./pages/UserSqueezyPage";
+import { SearchPage } from "./pages/SearchPage";
+import { AccountPage } from "./pages/AccountPage";
 
 const router = createMemoryRouter([
   {
     path: "/",
-    element: <LoginPageWrapper />,
+    element: <LoginPage />,
   },
   {
     path: "/squeeze",
@@ -29,28 +31,31 @@ const router = createMemoryRouter([
       </Layout>
     ),
   },
+  {
+    path: "/user",
+    element: (
+      <Layout>
+        <UserSqueezyPage />
+      </Layout>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <Layout>
+        <SearchPage />
+      </Layout>
+    ),
+  },
+  {
+    path: "/account",
+    element: (
+      <Layout>
+        <AccountPage />
+      </Layout>
+    ),
+  },
 ]);
-
-function LoginPageWrapper() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    chrome.storage.local.get(["type"], (result) => {
-      if (result.type === "eezy") {
-        navigate("/eezy");
-      } else if (result.type === "squeeze") {
-        navigate("/squeeze");
-      }
-      chrome.storage.local.remove(["type"]);
-    });
-  }, [navigate]);
-
-  return (
-    <Layout>
-      <LoginPage />
-    </Layout>
-  );
-}
 
 function App() {
   return (
