@@ -67,10 +67,9 @@ async function createGptTab() {
 chrome.runtime.onMessage.addListener(async (request) => {
   if (request.action === "open_sidepanel") {
     try {
-      setActiveTabAndWindow(() => {
-        openSidePanel(); // 사이드 패널 열기
-      });
-
+      if(request.type){
+        await chrome.storage.local.set({type: request.type});
+      }
       if (!homeAndGptWindow) {
         await createHomeAndGptWindow(); // ChatGPT 및 landing.html 창 생성
         // 기존 윈도우로 다시 포커스 이동
@@ -78,6 +77,9 @@ chrome.runtime.onMessage.addListener(async (request) => {
       } else if (!gptTab) {
         await createGptTab(); // ChatGPT 탭이 없으면 생성
       }
+      setActiveTabAndWindow(() => {
+        openSidePanel(); // 사이드 패널 열기
+      });
     } catch (error) {
       console.error("Error in open_sidepanel:", error);
     }
