@@ -23,9 +23,10 @@ export const Nav = ({setNavOpen}) => {
 
   const handleOnClick = (path) => {
     navigate(path);
+    setEnterIndex(0);
     setNavOpen(false);
   };
-  
+  console.log(enterIndex);
   return (
     <Container onMouseLeave={() => handleMouseLeave()}>
       <NavCell>
@@ -125,7 +126,7 @@ export const Nav = ({setNavOpen}) => {
 
 const Container = styled.nav`
   position: absolute;
-
+  z-index: 10;
   background-color: ${(props) => props.theme.color.white};
   border-radius: 12px;
   border: none;

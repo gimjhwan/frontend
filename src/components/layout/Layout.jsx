@@ -44,6 +44,9 @@ export const Layout = ({ children }) => {
 const Container = styled.div`
   min-width: 360px;
   width: 100%;
+  & > main {
+    z-index: 0;
+  }
 `;
 const Header = styled.header`
   display: flex;

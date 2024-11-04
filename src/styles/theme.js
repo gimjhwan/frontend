@@ -1,6 +1,6 @@
 const typography = {
   button : {
-    fontFamily : 'Futura Std',
+    fontFamily : 'Futura PT',
     fontSize : "14px",
     letterSpacing : "-6%",
   },
@@ -54,7 +54,6 @@ const color = {
     pressed : "#E85079"
   },
   white : "#FFFFFF",
-  black : "#000000",
 };
 
 export const theme = {
