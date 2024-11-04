@@ -10,6 +10,7 @@ function Preview() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const currentTab = tabs[0];
       chrome.runtime.sendMessage({ action: "open_sidepanel", tab: currentTab, type : btnType});
+      window.close();
     });
   }
 
