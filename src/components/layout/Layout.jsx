@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 // img
 import Logo from "../../assets/icon/icon-logo--text.svg?react";
@@ -8,19 +8,33 @@ import { Nav } from "./Nav";
 
 export const Layout = ({ children }) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsNavOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
+
   return (
     <Container>
       <Header>
         <div style={{ marginTop: "9px" }}>
           <Logo />
         </div>
-        <div onClick={() => setIsNavOpen((prev) => !prev)}>
-          <Menu />
+        <div ref={menuRef}>
+          <div onClick={() => setIsNavOpen((prev) => !prev)}>
+            <Menu />
+          </div>
+          {isNavOpen && <Nav setNavOpen={setIsNavOpen} />}
         </div>
-        {
-          isNavOpen && <Nav setNavOpen={setIsNavOpen}/>
-        }
       </Header>
       <main>{children}</main>
     </Container>
