@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 // style
 import styled from "styled-components";
 import Logo from "@assets/icon/icon-logo--img.svg?react";
@@ -8,11 +8,13 @@ import Eezy from "@assets/icon/icon-eezy--small.svg?react";
 import Search from "@assets/icon/icon-search--small.svg?react";
 import Squeeze from "@assets/icon/icon-squeeze--small.svg?react";
 import Titmetable from "@assets/icon/icon-timetable--small.svg?react";
+import { p } from "framer-motion/client";
 
-export const Nav = ({setNavOpen}) => {
+export const Nav = ({ setNavOpen }) => {
   const [userName, setUserName] = useState("UserName");
   const [enterIndex, setEnterIndex] = useState(0);
   const navigate = useNavigate();
+  const locate = useLocation();
 
   const handleMouseEnter = (index) => {
     setEnterIndex(index);
@@ -22,11 +24,12 @@ export const Nav = ({setNavOpen}) => {
   };
 
   const handleOnClick = (path) => {
+    if(path === locate.pathname) return;
     navigate(path);
     setEnterIndex(0);
     setNavOpen(false);
   };
-  console.log(enterIndex);
+
   return (
     <Container onMouseLeave={() => handleMouseLeave()}>
       <NavCell>
@@ -39,15 +42,31 @@ export const Nav = ({setNavOpen}) => {
         onMouseEnter={() => handleMouseEnter(1)}
         onMouseLeave={() => handleMouseLeave()}
         onClick={() => handleOnClick("/user")}
-        style={{ backgroundColor: enterIndex === 1 ? "#F0F0F0" : "" }}
+        style={{
+          backgroundColor:
+            enterIndex === 1 || locate.pathname.startsWith("/user")
+              ? "#F0F0F0"
+              : "",
+        }}
       >
         <Titmetable
           width={16}
           height={16}
-          fill={enterIndex === 1 ? "#1C1B1F" : "#808080"}
+          fill={
+            enterIndex === 1 || locate.pathname.startsWith("/user")
+              ? "#1C1B1F"
+              : "#808080"
+          }
         />
         <div>
-          <span style={{ color: enterIndex === 1 ? "#000000" : "" }}>
+          <span
+            style={{
+              color:
+                enterIndex === 1 || locate.pathname.startsWith("/user")
+                  ? "#000000"
+                  : "",
+            }}
+          >
             Your Squeezy
           </span>
         </div>
@@ -56,15 +75,31 @@ export const Nav = ({setNavOpen}) => {
         onMouseEnter={() => handleMouseEnter(2)}
         onMouseLeave={() => handleMouseLeave()}
         onClick={() => handleOnClick("/squeeze")}
-        style={{ backgroundColor: enterIndex === 2 ? "#F0F0F0" : "" }}
+        style={{
+          backgroundColor:
+            enterIndex === 2 || locate.pathname.startsWith("/squeeze")
+              ? "#F0F0F0"
+              : "",
+        }}
       >
         <Squeeze
           width={16}
           height={16}
-          fill={enterIndex === 2 ? "#1C1B1F" : "#808080"}
+          fill={
+            enterIndex === 2 || locate.pathname.startsWith("/squeeze")
+              ? "#1C1B1F"
+              : "#808080"
+          }
         />
         <div>
-          <span style={{ color: enterIndex === 2 ? "#000000" : "" }}>
+          <span
+            style={{
+              color:
+                enterIndex === 2 || locate.pathname.startsWith("/squeeze")
+                  ? "#000000"
+                  : "",
+            }}
+          >
             squeeze
           </span>
           <span>categorize current tabs</span>
@@ -74,15 +109,33 @@ export const Nav = ({setNavOpen}) => {
         onMouseEnter={() => handleMouseEnter(3)}
         onMouseLeave={() => handleMouseLeave()}
         onClick={() => handleOnClick("/eezy")}
-        style={{ backgroundColor: enterIndex === 3 ? "#F0F0F0" : "" }}
+        style={{
+          backgroundColor:
+            enterIndex === 3 || locate.pathname.startsWith("/eezy")
+              ? "#F0F0F0"
+              : "",
+        }}
       >
         <Eezy
           width={16}
           height={16}
-          fill={enterIndex === 3 ? "#1C1B1F" : "#808080"}
+          fill={
+            enterIndex === 3 || locate.pathname.startsWith("/eezy")
+              ? "#1C1B1F"
+              : "#808080"
+          }
         />
         <div>
-          <span style={{ color: enterIndex === 3 ? "#000000" : "" }}>eezy</span>
+          <span
+            style={{
+              color:
+                enterIndex === 3 || locate.pathname.startsWith("/eezy")
+                  ? "#000000"
+                  : "",
+            }}
+          >
+            eezy
+          </span>
           <span>summarize this page</span>
         </div>
       </NavCell>
@@ -90,15 +143,31 @@ export const Nav = ({setNavOpen}) => {
         onMouseEnter={() => handleMouseEnter(4)}
         onMouseLeave={() => handleMouseLeave()}
         onClick={() => handleOnClick("/search")}
-        style={{ backgroundColor: enterIndex === 4 ? "#F0F0F0" : "" }}
+        style={{
+          backgroundColor:
+            enterIndex === 4 || locate.pathname.startsWith("/search")
+              ? "#F0F0F0"
+              : "",
+        }}
       >
         <Search
           width={16}
           height={16}
-          fill={enterIndex === 4 ? "#1C1B1F" : "#808080"}
+          fill={
+            enterIndex === 4 || locate.pathname.startsWith("/search")
+              ? "#1C1B1F"
+              : "#808080"
+          }
         />
         <div>
-          <span style={{ color: enterIndex === 4 ? "#000000" : "" }}>
+          <span
+            style={{
+              color:
+                enterIndex === 4 || locate.pathname.startsWith("/search")
+                  ? "#000000"
+                  : "",
+            }}
+          >
             Search
           </span>
         </div>
@@ -107,15 +176,31 @@ export const Nav = ({setNavOpen}) => {
         onMouseEnter={() => handleMouseEnter(5)}
         onMouseLeave={() => handleMouseLeave()}
         onClick={() => handleOnClick("/account")}
-        style={{ backgroundColor: enterIndex === 5 ? "#F0F0F0" : "" }}
+        style={{
+          backgroundColor:
+            enterIndex === 5 || locate.pathname.startsWith("/account")
+              ? "#F0F0F0"
+              : "",
+        }}
       >
         <Account
           width={16}
           height={16}
-          fill={enterIndex === 5 ? "#1C1B1F" : "#808080"}
+          fill={
+            enterIndex === 5 || locate.pathname.startsWith("/account")
+              ? "#1C1B1F"
+              : "#808080"
+          }
         />
         <div>
-          <span style={{ color: enterIndex === 5 ? "#000000" : "" }}>
+          <span
+            style={{
+              color:
+                enterIndex === 5 || locate.pathname.startsWith("/account")
+                  ? "#000000"
+                  : "",
+            }}
+          >
             account
           </span>
         </div>
