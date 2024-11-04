@@ -1,6 +1,6 @@
 const typography = {
   button : {
-    fontFamily : 'Futura Std',
+    fontFamily : 'Futura PT',
     fontSize : "14px",
     letterSpacing : "-6%",
   },
