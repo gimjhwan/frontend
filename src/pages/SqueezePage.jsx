@@ -2,18 +2,20 @@ import styled from "styled-components";
 // img import
 import Logo from "@assets/icon/icon-logo--img.svg?react";
 import Squeeze from "@assets/icon/icon-squeeze--small.svg?react";
+import { useNavigate } from "react-router-dom";
 
 export const SqueezePage = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Header>
         <ProfileCircle>
           <Logo width={20} height={20} />
         </ProfileCircle>
-        <span>Do you wanna squeeze current tabs</span>
+        <span>Do you wanna squeeze current tabs?</span>
       </Header>
       <SqueezeButtonContainer>
-        <SqueezeButton>
+        <SqueezeButton onClick={() => navigate('/squeeze/squeezing')}>
           <Squeeze width={42} height={42} />
           <div>
             <span>squeeze</span>
