@@ -21,7 +21,7 @@ export const NavCells = ({setNavOpen}) => {
   };
 
   const handleOnClick = (path) => {
-    if (path.startsWith(locate.pathname)) return;
+    if (locate.pathname.startsWith(path)) return;
     navigate(path);
     setEnterIndex(0);
     setNavOpen(false);
