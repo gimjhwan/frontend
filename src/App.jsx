@@ -9,6 +9,7 @@ import { RouterProvider } from "react-router";
 import { UserSqueezyPage } from "./pages/UserSqueezyPage";
 import { SearchPage } from "./pages/SearchPage";
 import { AccountPage } from "./pages/AccountPage";
+import { SqueezingPage } from "./pages/SqueezingPage";
 
 const router = createMemoryRouter([
   {
@@ -20,6 +21,14 @@ const router = createMemoryRouter([
     element: (
       <Layout>
         <SqueezePage />
+      </Layout>
+    ),
+  },
+  {
+    path : "/squeeze/squeezing",
+    element: (
+      <Layout>
+        <SqueezingPage />
       </Layout>
     ),
   },
