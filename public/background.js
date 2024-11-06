@@ -82,7 +82,7 @@ function extractHtml() {
 
   // p와 li 태그는 최대 5개씩만 추출
   const pTags = Array.from(document.querySelectorAll("p"))
-    .slice(0, 5)
+    .slice(0, 30)
     .map((el) => el.innerText);
 
   // 최종 콘텐츠 조합
@@ -112,24 +112,42 @@ chrome.runtime.onMessage.addListener(async (request) => {
       console.error("Error in open_sidepanel:", error);
     }
   } else if (request.action === "eezy") {
-    const extractedContent = extractHtml();
-    console.log("Extracted HTML Content:", extractedContent);
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0) {
+        chrome.scripting.executeScript(
+          {
+            target: { tabId: tabs[0].id },
+            func: extractHtml,
+          },
+          (results) => {
+            if (results) {
+              const extractedContent = results[0].result;
+              console.log("Extracted HTML Content:", extractedContent);
 
-    // Send the extracted content to the API
-    fetch("http://127.0.0.1:8000/api/eezy/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: "테스트 입니당",
-        url: "https://www.codestates.com/blog/content/피그마-사용법",
-        script: extractedContent,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log("Response from API:", data))
-      .catch((error) => console.error("Error sending data to API:", error));
+              // Send the extracted content to the API
+              fetch("http://127.0.0.1:8000/api/eezy/", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  title: "테스트 입니당",
+                  url: "https://www.codestates.com/blog/content/피그마-사용법",
+                  script: extractedContent,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => console.log("Response from API:", data))
+                .catch((error) =>
+                  console.error("Error sending data to API:", error)
+                );
+            }
+          }
+        );
+      } else {
+        console.log("활성화된 탭을 찾을 수 없습니다.");
+      }
+    });
   }
 });
 
