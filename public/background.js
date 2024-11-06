@@ -63,6 +63,35 @@ async function createGptTab() {
   gptTabId = gptTab.id;
 }
 
+function extractHtml() {
+  let extractedContent = "";
+
+  // 핵심 태그만 추출
+  const title = document.querySelector("title")
+    ? document.querySelector("title").innerText
+    : "";
+  const h1 = document.querySelector("h1")
+    ? document.querySelector("h1").innerText
+    : "";
+  const h2 = document.querySelector("h2")
+    ? document.querySelector("h2").innerText
+    : "";
+  const metaDescription = document.querySelector("meta[name='description']")
+    ? document.querySelector("meta[name='description']").getAttribute("content")
+    : "";
+
+  // p와 li 태그는 최대 5개씩만 추출
+  const pTags = Array.from(document.querySelectorAll("p"))
+    .slice(0, 5)
+    .map((el) => el.innerText);
+
+  // 최종 콘텐츠 조합
+  const contentArray = [title, h1, h2, metaDescription, ...pTags];
+  const finalContent = contentArray.join("\n");
+
+  return finalContent;
+}
+
 // 팝업의 버튼이 눌렸을 때의 preview.jsx/onSqueeze()의 메시지를 수신하기 위한 이벤트 리스너 등록
 chrome.runtime.onMessage.addListener(async (request) => {
   if (request.action === "open_sidepanel") {
@@ -82,12 +111,31 @@ chrome.runtime.onMessage.addListener(async (request) => {
     } catch (error) {
       console.error("Error in open_sidepanel:", error);
     }
+  } else if (request.action === "eezy") {
+    const extractedContent = extractHtml();
+    console.log("Extracted HTML Content:", extractedContent);
+
+    // Send the extracted content to the API
+    fetch("http://127.0.0.1:8000/api/eezy/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: "테스트 입니당",
+        url: "https://www.codestates.com/blog/content/피그마-사용법",
+        script: extractedContent,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log("Response from API:", data))
+      .catch((error) => console.error("Error sending data to API:", error));
   }
 });
 
 // 만약 열어놨던 chat gpt 탭이나 landing.html 탭이 닫히면 사이드 패널도 닫히도록 함
 
-// 윈도우가 닫힐 때 동작을 감지하는 리스너 등록
+// 윈도우가 ���힐 때 동작을 감지하는 리스너 등록
 /*chrome.windows.onRemoved.addListener((windowId) => {
   // 닫힌 윈도우가 homeAndGptWindow 인지 확인
   if (homeAndGptWindow && homeAndGptWindow.id === windowId) {
@@ -136,40 +184,11 @@ chrome.tabs.onRemoved.addListener(() => {
 });
 
 // 웹 페이지에서 필요한 html 태그만 추출하는 함수
-function extractHtml() {
-  let extractedContent = "";
-  const elements = document.querySelectorAll("title, h1, h2, p, li");
-  const contentArray = Array.from(elements).map((el) => el.innerText);
-  const finalContent = contentArray.join("\n");
 
-  return finalContent;
-}
-
-// 익스텐션 실행 중에 들어오는 모든 요청을 처리
+// 익스텐션 실행 중에 들어오�� 모든 요청을 처리
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   // 웹 페이지 요약 요청 처리
-  if (request.action == "scripting") {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const current_tab = tabs[0];
-      if (current_tab) {
-        chrome.scripting.executeScript(
-          {
-            target: { tabId: current_tab.id },
-            function: extractHtml,
-          },
-          (result) => {
-            if (result) {
-              sendResponse({ content: result[0].result });
-            }
-          }
-        );
-      }
-    });
-    return true;
-    //
-  } else if (request.action == "summarizing") {
-    const content = request.content; // 추출한 코드가 들어있는 문자열입니다!
-  } else if (request.action == "open_sidepanel") {
+  if (request.action == "open_sidepanel") {
     currentTab = request.tab;
     chrome.sidePanel.open({ tabId: currentTab.id }); // 사이드바 열기
     return true;
