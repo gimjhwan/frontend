@@ -8,17 +8,17 @@ chrome.runtime.onInstalled.addListener(() => {
 
 // 전역 변수 선언
 let homeAndGptWindow = null; // 생성된 "홈페이지 및 ChatGPT" 윈도우를 저장
-let currentWindowId = null;  // 현재 활성화된 윈도우의 ID
-let currentTabId = null;     // 현재 활성화된 탭의 ID
-let landingTabId = null;     // landing.html 탭의 ID
-let gptTabId = null;         // ChatGPT 탭의 ID
-let gptTab = null;           // ChatGPT 탭 객체
+let currentWindowId = null; // 현재 활성화된 윈도우의 ID
+let currentTabId = null; // 현재 활성화된 탭의 ID
+let landingTabId = null; // landing.html 탭의 ID
+let gptTabId = null; // ChatGPT 탭의 ID
+let gptTab = null; // ChatGPT 탭 객체
 
 // 현재 활성화된 탭과 윈도우 정보를 설정하는 함수
 function setActiveTabAndWindow(callback) {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs.length > 0) {
-      const currentTab = tabs[0];   // 활성화된 첫 번째 탭 선택
+      const currentTab = tabs[0]; // 활성화된 첫 번째 탭 선택
       currentTabId = currentTab.id; // 활성화된 탭의 ID 저장
       currentWindowId = currentTab.windowId; // 활성화된 윈도우의 ID 저장
       callback();
@@ -39,11 +39,11 @@ function openSidePanel() {
 // 새로운 ChatGPT 및 landing.html 윈도우를 생성하는 함수
 async function createHomeAndGptWindow() {
   homeAndGptWindow = await chrome.windows.create({
-    url: ['landing.html', 'https://chat.openai.com'],
-    type: 'normal',
+    url: ["landing.html", "https://chat.openai.com"],
+    type: "normal",
     width: 1200,
     height: 800,
-    focused: false // 포커스가 옮겨지지 않도록 설정
+    focused: false, // 포커스가 옮겨지지 않도록 설정
   });
 
   // 각 탭의 ID 저장
@@ -57,8 +57,8 @@ async function createHomeAndGptWindow() {
 // ChatGPT 탭을 생성하는 함수
 async function createGptTab() {
   gptTab = await chrome.tabs.create({
-    url: 'https://chat.openai.com',
-    windowId: homeAndGptWindow.id
+    url: "https://chat.openai.com",
+    windowId: homeAndGptWindow.id,
   });
   gptTabId = gptTab.id;
 }
@@ -67,19 +67,18 @@ async function createGptTab() {
 chrome.runtime.onMessage.addListener(async (request) => {
   if (request.action === "open_sidepanel") {
     try {
-      if(request.type){
-        await chrome.storage.local.set({type: request.type});
+      if (request.type) {
+        await chrome.storage.local.set({ type: request.type });
       }
+      /*
       if (!homeAndGptWindow) {
         await createHomeAndGptWindow(); // ChatGPT 및 landing.html 창 생성
         // 기존 윈도우로 다시 포커스 이동
         await chrome.windows.update(currentWindowId, { focused: true });
       } else if (!gptTab) {
         await createGptTab(); // ChatGPT 탭이 없으면 생성
-      }
-      setActiveTabAndWindow(() => {
-        openSidePanel(); // 사이드 패널 열기
-      });
+      }*/
+      openSidePanel(); // 사이드 패널 열기
     } catch (error) {
       console.error("Error in open_sidepanel:", error);
     }
@@ -89,20 +88,20 @@ chrome.runtime.onMessage.addListener(async (request) => {
 // 만약 열어놨던 chat gpt 탭이나 landing.html 탭이 닫히면 사이드 패널도 닫히도록 함
 
 // 윈도우가 닫힐 때 동작을 감지하는 리스너 등록
-chrome.windows.onRemoved.addListener((windowId) => {
+/*chrome.windows.onRemoved.addListener((windowId) => {
   // 닫힌 윈도우가 homeAndGptWindow 인지 확인
   if (homeAndGptWindow && homeAndGptWindow.id === windowId) {
-    homeAndGptWindow = null;  // homeAndGptWindow 객체 초기화 (null로 설정)
-    gptTab = null;            // gptTab 객체 초기화 (null로 설정)
+    homeAndGptWindow = null; // homeAndGptWindow 객체 초기화 (null로 설정)
+    gptTab = null; // gptTab 객체 초기화 (null로 설정)
 
     // 사이드 패널 비활성화
     chrome.sidePanel.setOptions({ enabled: false, tabId: currentTabId });
     console.log("Side panel closed because homepage and GPT window closed."); // 사이드 패널이 닫혔음을 로그에 출력
   }
-});
+});*/
 
 // 탭이 닫힐 때 동작을 감지하는 리스너 등록
-chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+/*chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
   // 닫힌 탭이 landingTab 또는 gptTab 인지 확인
   if (tabId === landingTabId || tabId === gptTabId) {
     // 해당 탭이 닫히면 사이드 패널 비활성화
@@ -112,17 +111,16 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
     // 닫힌 탭이 gptTab 인지 확인
     if (tabId === gptTabId) {
       console.log("gpt tab closed."); // gpt 탭이 닫혔음을 로그에 출력
-      gptTab = null;                  // gptTab 객체 초기화
-      gptTabId = null;                // gptTabId 초기화
+      gptTab = null; // gptTab 객체 초기화
+      gptTabId = null; // gptTabId 초기화
     }
 
     // 닫힌 탭이 landingTab 인지 확인
     if (tabId === landingTabId) {
-      landingTabId = null;             // landingTabId 초기화
+      landingTabId = null; // landingTabId 초기화
     }
   }
-});
-
+});*/
 
 // 현재 탭 상황에서 변화가 생기면 바로 반영해서 TabList 업데이트
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
