@@ -129,6 +129,7 @@ chrome.runtime.onMessage.addListener(async (request) => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
+                  Authorization: "1df171fcbcdfd6bb811e99e06a278dca89a5ea99",
                 },
                 body: JSON.stringify({
                   title: "테스트 입니당",
