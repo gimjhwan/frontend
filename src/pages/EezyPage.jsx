@@ -6,6 +6,18 @@ import { useNavigate } from "react-router-dom";
 
 export const EezyPage = () => {
   const navigate = useNavigate();
+
+  const handleEezyClick = () => {
+    chrome.runtime.sendMessage({ action: "eezy" }, (response) => {
+      if (chrome.runtime.lastError) {
+        console.error("Error sending message:", chrome.runtime.lastError);
+      } else {
+        console.log("Message sent successfully:", response);
+      }
+    });
+    navigate("/eezy/eezying");
+  };
+
   return (
     <Container>
       <Header>
@@ -15,7 +27,7 @@ export const EezyPage = () => {
         <span>Do you wanna eezy current tabs?</span>
       </Header>
       <SqueezeButtonContainer>
-        <SqueezeButton onClick={() => navigate('/eezy/eezying')}>
+        <SqueezeButton onClick={handleEezyClick}>
           <Eezy width={42} height={42} />
           <div>
             <span>eezy</span>
@@ -68,7 +80,7 @@ const SqueezeButton = styled.button`
   gap: 11px;
   align-items: center;
 
-  border: 1px solid #F485A3;
+  border: 1px solid #f485a3;
   border-radius: 18px;
   background-color: ${(props) => props.theme.color.pink.default};
 
