@@ -129,11 +129,11 @@ chrome.runtime.onMessage.addListener(async (request) => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: "1df171fcbcdfd6bb811e99e06a278dca89a5ea99",
+                  Authorization: "751aae735c54cfed0965670c717acda12e5a2711",
                 },
                 body: JSON.stringify({
-                  title: "테스트 입니당",
-                  url: "https://www.codestates.com/blog/content/피그마-사용법",
+                  title: tabs[0].title,
+                  url: tabs[0].url,
                   script: extractedContent,
                 }),
               })
