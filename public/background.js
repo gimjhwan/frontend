@@ -129,7 +129,7 @@ chrome.runtime.onMessage.addListener(async (request) => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: "751aae735c54cfed0965670c717acda12e5a2711",
+                  Authorization: "9ec0752343b2f1433d9e514cc31789bde9a9e338",
                 },
                 body: JSON.stringify({
                   title: tabs[0].title,
