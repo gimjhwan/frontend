@@ -2,15 +2,48 @@ import styled from "styled-components";
 import Logo from "@assets/icon/icon-logo--img.svg?react";
 import Folder from "@assets/icon/icon-folder.svg?react";
 import { EezyItem } from "@components/eezy/EezyItem";
+import { useState, useEffect } from "react";
 
 export const EezingPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingCount, setLoadingCount] = useState(1);
+
+  useEffect(() => {
+    let timer;
+    if (isLoading) {
+      timer = setTimeout(() => {
+        setLoadingCount((prevCount) => (prevCount < 3 ? prevCount + 1 : 1));
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [loadingCount, isLoading]);
+
+  useEffect(() => {
+    const fetchEezy = async () => {
+      try {
+        const response = await chrome.runtime.sendMessage(
+          { action: "eezy" },
+          (response) => {
+            console.log(response);
+          }
+        );
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
+    };
+
+    fetchEezy();
+  }, []);
+
   return (
     <Container>
       <Header>
         <ProfileCircle>
           <Logo width={20} height={20} />
         </ProfileCircle>
-        <span>eezing...</span>
+        <span>
+          {isLoading ? `eezing${".".repeat(loadingCount)}` : "Complete!"}
+        </span>
       </Header>
       <EezyItem />
       <MemoBox>
@@ -88,7 +121,8 @@ const MemoInput = styled.textarea`
   &::placeholder {
     color: rgba(0, 0, 0, 0.45);
   }
-  &:active, &:focus {
+  &:active,
+  &:focus {
     outline: none;
   }
 `;
