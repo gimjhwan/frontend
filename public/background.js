@@ -125,11 +125,11 @@ chrome.runtime.onMessage.addListener(async (request) => {
               console.log("Extracted HTML Content:", extractedContent);
 
               // Send the extracted content to the API
-              fetch("http://127.0.0.1:8000/api/eezy/", {
+              fetch("http://13.124.143.64/api/eezy/", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: "9ec0752343b2f1433d9e514cc31789bde9a9e338",
+                  Authorization: "751aae735c54cfed0965670c717acda12e5a2711",
                 },
                 body: JSON.stringify({
                   title: tabs[0].title,
