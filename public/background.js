@@ -125,15 +125,15 @@ chrome.runtime.onMessage.addListener(async (request) => {
               console.log("Extracted HTML Content:", extractedContent);
 
               // Send the extracted content to the API
-              fetch("http://127.0.0.1:8000/api/eezy/", {
+              fetch("http://13.124.143.64/api/eezy/", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: "1df171fcbcdfd6bb811e99e06a278dca89a5ea99",
+                  Authorization: "751aae735c54cfed0965670c717acda12e5a2711",
                 },
                 body: JSON.stringify({
-                  title: "테스트 입니당",
-                  url: "https://www.codestates.com/blog/content/피그마-사용법",
+                  title: tabs[0].title,
+                  url: tabs[0].url,
                   script: extractedContent,
                 }),
               })
