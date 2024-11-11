@@ -1,12 +1,16 @@
+import { useState, useEffect } from "react";
+// import styled
 import styled from "styled-components";
+// import img
 import Logo from "@assets/icon/icon-logo--img.svg?react";
 import Folder from "@assets/icon/icon-folder.svg?react";
+// import components
 import { EezyItem } from "@components/eezy/EezyItem";
-import { useState, useEffect } from "react";
 
 export const EezingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingCount, setLoadingCount] = useState(1);
+  const [data, setData] = useState({});
 
   useEffect(() => {
     let timer;
@@ -21,17 +25,20 @@ export const EezingPage = () => {
   useEffect(() => {
     const fetchEezy = async () => {
       try {
-        const response = await chrome.runtime.sendMessage(
-          { action: "eezy" },
-          (response) => {
-            console.log(response);
-          }
-        );
+        const { response } = await new Promise((resolve, reject) => {
+          chrome.runtime.sendMessage({ action: "eezy" }, (response) => {
+            if (chrome.runtime.lastError) {
+              reject(chrome.runtime.lastError);
+            } else {
+              resolve(response);
+            }
+          });
+        });
+        setData(response); // 성공 시 typing animation 실행
       } catch (error) {
         console.error("Error sending message:", error);
       }
     };
-
     fetchEezy();
   }, []);
 
@@ -45,26 +52,32 @@ export const EezingPage = () => {
           {isLoading ? `eezing${".".repeat(loadingCount)}` : "Complete!"}
         </span>
       </Header>
-      <EezyItem />
-      <MemoBox>
-        <MemoInput type="text" placeholder="Add memo..." />
-        <MemoNum>
-          <span>0/500</span>
-        </MemoNum>
-      </MemoBox>
-      <AddBox>
-        <AddButton>Add your History</AddButton>
-      </AddBox>
-      <ChooseBox>
-        <ChooseText>
-          <span>Related Category</span>
-          <span>or create new category</span>
-        </ChooseText>
-        <ChooseIcon>
-          <span>+1</span>
-          <Folder width={15} height={11} />
-        </ChooseIcon>
-      </ChooseBox>
+      <EezyItem isLoading={isLoading} setLoading={setIsLoading} data={data} />
+      {!isLoading && (
+        <MemoBox>
+          <MemoInput type="text" placeholder="Add memo..." />
+          <MemoNum>
+            <span>0/500</span>
+          </MemoNum>
+        </MemoBox>
+      )}
+      {!isLoading && (
+        <AddBox>
+          <AddButton>Add your History</AddButton>
+        </AddBox>
+      )}
+      {!isLoading && (
+        <ChooseBox>
+          <ChooseText>
+            <span>Related Category</span>
+            <span>or create new category</span>
+          </ChooseText>
+          <ChooseIcon>
+            <span>+1</span>
+            <Folder width={15} height={11} />
+          </ChooseIcon>
+        </ChooseBox>
+      )}
     </Container>
   );
 };

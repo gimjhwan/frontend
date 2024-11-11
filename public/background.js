@@ -93,23 +93,17 @@ function extractHtml() {
 }
 
 // 팝업의 버튼이 눌렸을 때의 preview.jsx/onSqueeze()의 메시지를 수신하기 위한 이벤트 리스너 등록
-chrome.runtime.onMessage.addListener(async (request) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "open_sidepanel") {
     try {
       if (request.type) {
-        await chrome.storage.local.set({ type: request.type });
+        chrome.storage.local.set({ type: request.type });
       }
-      /*
-      if (!homeAndGptWindow) {
-        await createHomeAndGptWindow(); // ChatGPT 및 landing.html 창 생성
-        // 기존 윈도우로 다시 포커스 이동
-        await chrome.windows.update(currentWindowId, { focused: true });
-      } else if (!gptTab) {
-        await createGptTab(); // ChatGPT 탭이 없으면 생성
-      }*/
       openSidePanel(); // 사이드 패널 열기
+      sendResponse({ success: true }); // 성공적으로 사이드 패널을 열었음을 응답
     } catch (error) {
       console.error("Error in open_sidepanel:", error);
+      sendResponse({ success: false, error: error.message });
     }
   } else if (request.action === "eezy") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -120,9 +114,8 @@ chrome.runtime.onMessage.addListener(async (request) => {
             func: extractHtml,
           },
           (results) => {
-            if (results) {
+            if (results && results[0]) {
               const extractedContent = results[0].result;
-              console.log("Extracted HTML Content:", extractedContent);
 
               // Send the extracted content to the API
               fetch("http://13.124.143.64/api/eezy/", {
@@ -138,18 +131,27 @@ chrome.runtime.onMessage.addListener(async (request) => {
                 }),
               })
                 .then((response) => response.json())
-                .then((data) => console.log("Response from API:", data))
-                .catch((error) =>
-                  console.error("Error sending data to API:", error)
-                );
+                .then((data) => {
+                  sendResponse({ response: data });
+                })
+                .catch((error) => {
+                  console.error("Error sending data to API:", error);
+                  sendResponse({ response: "error" });
+                });
+            } else {
+              console.log("No results from script execution.");
+              sendResponse({ response: "no results" });
             }
           }
         );
       } else {
         console.log("활성화된 탭을 찾을 수 없습니다.");
+        sendResponse({ response: "no active tab" });
       }
     });
+    return true; // 비동기 응답을 허용
   }
+  return true;
 });
 
 // 만약 열어놨던 chat gpt 탭이나 landing.html 탭이 닫히면 사이드 패널도 닫히도록 함
