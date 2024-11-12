@@ -8,13 +8,6 @@ export const EezyPage = () => {
   const navigate = useNavigate();
 
   const handleEezyClick = () => {
-    chrome.runtime.sendMessage({ action: "eezy" }, (response) => {
-      if (chrome.runtime.lastError) {
-        console.error("Error sending message:", chrome.runtime.lastError);
-      } else {
-        console.log("Message sent successfully:", response);
-      }
-    });
     navigate("/eezy/eezying");
   };
 

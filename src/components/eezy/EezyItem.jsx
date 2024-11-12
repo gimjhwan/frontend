@@ -1,18 +1,27 @@
+//import styled
 import styled from "styled-components";
+//import img
 import Eezy from "@assets/icon/icon-eezy--small.svg?react";
 import Edit from "@assets/icon/icon-edit.svg?react";
-import { EezyButton } from "./EezyButton";
 import Copy from "@assets/icon/icon-copy.svg?react";
 import Regenerate from "@assets/icon/icon-refresh.svg?react";
 import Share from "@assets/icon/icon-share.svg?react";
+//import components
+import { TypeAnimation } from "../common/TypeAnimation";
+import { EezyButton } from "./EezyButton";
 
-export const EezyItem = ({ data = { title: "Exporing UI Design" } }) => {
+export const EezyItem = ({ isLoading = true, setLoading, data }) => {
+  const subTitle = data.content ? data.content.split("\n")[0].slice(2) : undefined;
+  const content = data.content
+    ? data.content.split("\n").slice(2).join("\n")
+    : undefined;
+
   return (
     <Container>
       <Header>
         <Title>
           <Eezy />
-          <span>{data.title}</span>
+          {<TypeAnimation text={data.title} frame={50} />}
         </Title>
         <div>
           <Edit width={13} height={13} />
@@ -20,39 +29,30 @@ export const EezyItem = ({ data = { title: "Exporing UI Design" } }) => {
       </Header>
       <Contents>
         <Content>
-          <span>SubTitle1</span>
+          {<TypeAnimation text={subTitle} frame={50} startTime={1200} />}
           <div>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </div>
-        </Content>
-        <Content>
-          <span>SubTitle2</span>
-          <div>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            {
+              <TypeAnimation
+                text={content}
+                frame={10}
+                startTime={2000}
+                setFlag={setLoading}
+              />
+            }
           </div>
         </Content>
       </Contents>
-      <Buttons>
-        <EezyButton text="Copy" Img={Copy} onclickFunc={() => {}} />
-        <EezyButton text="Regenerate" Img={Regenerate} onclickFunc={() => {}} />
-        <EezyButton text="Share" Img={Share} onclickFunc={() => {}} />
-      </Buttons>
+      {!isLoading && (
+        <Buttons>
+          <EezyButton text="Copy" Img={Copy} onclickFunc={() => {}} />
+          <EezyButton
+            text="Regenerate"
+            Img={Regenerate}
+            onclickFunc={() => {}}
+          />
+          <EezyButton text="Share" Img={Share} onclickFunc={() => {}} />
+        </Buttons>
+      )}
     </Container>
   );
 };
@@ -84,7 +84,7 @@ const Title = styled.div`
   }
 `;
 const Contents = styled.div`
-  height: 304px;
+  max-height: 304px;
 
   display: flex;
   flex-direction: column;
