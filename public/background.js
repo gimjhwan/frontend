@@ -150,6 +150,38 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
     });
     return true; // 비동기 응답을 허용
+  } else if (request.action === "squeeze") {
+    const allTabs = [];
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        allTabs.push({
+          title: tab.title,
+          url: tab.url,
+        });
+      });
+    });
+    if (allTabs) {
+      fetch("http://13.124.143.64/api/squeeze/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "751aae735c54cfed0965670c717acda12e5a2711",
+        },
+        body: JSON.stringify({
+          tabs: allTabs,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          sendResponse({ response: data });
+        })
+        .catch((error) => {
+          console.error("Error sending data to API:", error);
+          sendResponse({ response: "error" });
+        });
+    } else {
+      console.log("탭이 없어요!");
+    }
   }
   return true;
 });
