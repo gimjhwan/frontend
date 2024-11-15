@@ -5,10 +5,8 @@ import { useEffect, useState } from "react";
 
 export const SqueezingPage = () => {
   const [tabsData, setTabsData] = useState({
-    titles: [],
-    urls: [],
-    favicons: [],
-    capturedImage: "",
+    tabs : [],
+    capturedImage : "",
   });
 
   useEffect(() => {

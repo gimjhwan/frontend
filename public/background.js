@@ -263,17 +263,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 function previewTab(callback) {
   const previews = {
-    titles: [],
-    urls: [],
-    favicons: [],
+    tabs : [],
     capturedImage: "",
   };
   chrome.tabs.query({}, (tabs) => {
     tabs.forEach((tab, index) => {
       if (index > 0 && index != tab.index) return; // 현재 탭만 허용
-      previews.titles.push(tab.title);
-      previews.urls.push(tab.url);
-      previews.favicons.push(tab.favIconUrl);
+      previews.tabs.push({
+        title : tab.title,
+        url : tab.url,
+        favicon : tab.favIconUrl,
+      })
     });
     
     chrome.tabs.captureVisibleTab(null, { format: "png" }, (dataUrl) => {
