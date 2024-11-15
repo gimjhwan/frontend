@@ -94,6 +94,19 @@ function extractHtml() {
 
 // 팝업의 버튼이 눌렸을 때의 preview.jsx/onSqueeze()의 메시지를 수신하기 위한 이벤트 리스너 등록
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "preview") {
+    (async function () {
+      try {
+        await previewTab((previews) => {
+          sendResponse(previews);
+        });
+      } catch (error) {
+        sendResponse({});
+      }
+    })();
+    return true;
+  }
+
   if (request.action === "open_sidepanel") {
     try {
       if (request.type) {
@@ -247,3 +260,50 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 });
+
+function previewTab(callback) {
+  const previews = {
+    titles: [],
+    urls: [],
+    favicons: [],
+    capturedImage: "",
+  };
+  chrome.tabs.query({}, (tabs) => {
+    tabs.forEach((tab, index) => {
+      if (index > 0 && index != tab.index) return; // 현재 탭만 허용
+      previews.titles.push(tab.title);
+      previews.urls.push(tab.url);
+      previews.favicons.push(tab.favIconUrl);
+    });
+    
+    chrome.tabs.captureVisibleTab(null, { format: "png" }, (dataUrl) => {
+      if (dataUrl) {
+        previews.capturedImage = dataUrl;
+        callback(previews);
+      } else {
+        captureTab(previews, 0, tabs, callback); // 캡처 실패 시 모든 탭 재귀형 캡처
+      }
+    }); // 현재 탭 캡쳐
+  });
+}
+
+function captureTab(previews, index, tabs, callback) {
+  if (index >= tabs.length) {
+    callback(previews);
+    return;
+  }
+
+  const tab = tabs[index];
+  chrome.tabs.update(tab.id, { active: true }, () => {
+    setTimeout(() => {
+      chrome.tabs.captureVisibleTab(null, { format: "png" }, (dataUrl) => {
+        if (dataUrl) {
+          previews.capturedImage = dataUrl; // 캡처 성공
+          callback(previews);
+        } else {
+          captureTab(previews, index + 1, tabs, callback);
+        }
+      });
+    }, 700); // 1초 대기 후 캡처 시도
+  });
+}
