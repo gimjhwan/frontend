@@ -1,8 +1,29 @@
 import styled from "styled-components";
 import Logo from "@assets/icon/icon-logo--img.svg?react";
 import { SqueezeItem } from "../components/squeeze/SqueezeItem";
+import { useEffect, useState } from "react";
 
 export const SqueezingPage = () => {
+  const [tabsData, setTabsData] = useState({
+    titles: [],
+    urls: [],
+    favicons: [],
+    capturedImage: "",
+  });
+
+  useEffect(() => {
+    const getTabsData = async () => {
+      await new Promise((resolve, reject) => {
+        chrome.runtime.sendMessage({ action: "preview" }, (response) => {
+          if (response) resolve(response);
+        });
+      }).then((res) => {
+        setTabsData(res);
+      });
+    };
+    getTabsData();
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -51,4 +72,3 @@ const ProfileCircle = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
