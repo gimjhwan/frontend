@@ -50,19 +50,16 @@ const Comp = styled.div`
   margin-top: 18px;
   display: flex;
   flex-direction: row;
-  border: 1px red solid;
 `;
 
 const TextBox = styled.div`
   width: 273px;
   height: 50px;
   margin-left: 12px;
-  border: 1px blue solid;
 `;
 
 const Title = styled.div`
   height: 32px;
-  border: 1px seagreen solid;
   ${(props) => props.theme.typography.h3};
   color: ${(props) => props.theme.color.black};
 `;
@@ -70,7 +67,6 @@ const Title = styled.div`
 const Url = styled.div`
   height: 14px;
   margin-top: 4px;
-  border: 1px dodgerblue solid;
   ${(props) => props.theme.typography.subDescription};
   color: #858585;
 `;
